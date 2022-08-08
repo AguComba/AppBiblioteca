@@ -1,0 +1,61 @@
+﻿@model IEnumerable<AppBiblioteca.Models.Editoriales>
+
+@{
+    ViewBag.Title = "Lista de Editoriales";
+}
+
+<h2>Listado de editoriales</h2>
+
+<p>
+    <a class="btn btn-primary" href="/Editoriales/Create">
+        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        Nueva Editorial
+    </a>
+</p>
+
+@if (ViewBag.MensajeDevuelto != null)
+{
+    <div class="alert alert-warning text-center" role="alert">
+        @ViewBag.MensajeDevuelto
+    </div>
+}
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EditorialNombre)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EditorialNombre)
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-dark" href="/Editoriales/Edit/@item.EditorialID">
+                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                        Modificar
+                    </a>
+                    <a class="btn btn-danger" onclick="EliminarEditorial(@item.EditorialID)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function EliminarEditorial(EditorialID) {
+
+        var confirmar = confirm("¿Esta seguro de eliminar la Editorial seleccionada?")
+        if (confirmar == true) {
+            location.href = '../Editoriales/DeleteConfirmed/'+ EditorialID;
+        }
+    }
+</script>

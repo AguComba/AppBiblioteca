@@ -1,0 +1,63 @@
+﻿@model AppBiblioteca.Models.Prestamos
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Prestamos</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.PrestamoID)
+
+    <div class="form-group">
+        
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.PrestamoFecha, htmlAttributes: new { @class = "control-label" })
+            @*@Html.EditorFor(model => model.PrestamoFecha, new { htmlAttributes = new { @class = "form-control" } })*@
+            <input type="date" name="PrestamoFecha" class="form-control" value="@Model.PrestamoFecha.ToString("yyyy-MM-dd")" />
+            @Html.ValidationMessageFor(model => model.PrestamoFecha, "", new { @class = "text-danger" })
+        </div>
+     
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.PrestamoFechaDevolucion, htmlAttributes: new { @class = "control-label " })
+            @*@Html.EditorFor(model => model.PrestamoFechaDevolucion, new { htmlAttributes = new { @class = "form-control" } })*@
+            <input type="date" name="PrestamoFechaDevolucion" class="form-control" value="@Model.PrestamoFechaDevolucion.ToString("yyyy-MM-dd")" />
+            @Html.ValidationMessageFor(model => model.PrestamoFechaDevolucion, "", new { @class = "text-danger" })
+        </div>    
+       
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.SocioID, "SocioID", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownList("SocioID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SocioID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-success" />
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10">
+            <a class="btn btn-outline-danger" href="/Prestamos/Index"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Atras</a>
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

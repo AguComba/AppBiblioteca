@@ -1,0 +1,46 @@
+﻿@model IEnumerable<AppBiblioteca.Models.Prestamos>
+
+@{
+    ViewBag.Title = "Lista de prestamos";
+}
+
+<h2>Listado de Prestamos</h2>
+
+<p>
+    <a href="~/Prestamos/Create" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Prestamo</a>
+</p>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Socios.SocioNombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrestamoFecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrestamoFechaDevolucion)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+@foreach (var item in Model) {
+    <tbody>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Socios.SocioNombreCompleto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrestamoFecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrestamoFechaDevolucion)
+        </td>
+        <td class="text-center">
+            <a class="btn btn-info" href="/Prestamos/Details/@item.PrestamoID"><i class="fa fa-info-circle" aria-hidden="true"></i> Detalles</a>
+        </td>
+    </tr>
+</tbody>
+}
+
+</table>

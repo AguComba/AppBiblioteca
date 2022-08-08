@@ -1,0 +1,35 @@
+﻿@model AppBiblioteca.Models.Devoluciones
+
+@{
+    ViewBag.Title = "Detalles Devolucion";
+}
+
+<h2>Devolucion Detalles</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Socios.SocioNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Socios.SocioNombreCompleto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DevolucionFecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DevolucionFecha)
+        </dd>
+
+    </dl>
+</div>
+
+        <div>
+            <a class="btn btn-outline-danger" href="/Devoluciones/Index"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Atras</a>
+        </div>
+
+

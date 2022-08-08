@@ -1,0 +1,119 @@
+﻿@model AppBiblioteca.Models.Libros
+
+@{
+    ViewBag.Title = "Editar libro";
+}
+
+<h2>Editar libro</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Libros</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.LibroID)
+
+    <div class="form-group">
+        <div class="row">
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.LibroISBN, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.LibroISBN, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LibroISBN, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.LibroTitulo, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.LibroTitulo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LibroTitulo, "", new { @class = "text-danger" })
+            </div>
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.LibroResenia, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.LibroResenia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LibroResenia, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.LibroFechaPublicacion, htmlAttributes: new { @class = "control-label" })
+                @*@Html.EditorFor(model => model.LibroFechaPublicacion, new { htmlAttributes = new { @class = "form-control" } })*@
+                <input type="date" class="form-control" name="LibroFechaPublicacion" value="@Model.LibroFechaPublicacion.ToString("yyyy-MM-dd")" />
+                @Html.ValidationMessageFor(model => model.LibroFechaPublicacion, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.EstadoLibro, htmlAttributes: new { @class = "control-label" })
+                @Html.EnumDropDownListFor(model => model.EstadoLibro, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EstadoLibro, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.AutoresID, "Autores", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("AutoresID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AutoresID, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.EditorialID, "Editorial", htmlAttributes: new { @class = "control-label " })
+                @Html.DropDownList("EditorialID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EditorialID, "", new { @class = "text-danger" })
+            </div>
+
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.GeneroID, "Genero", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("GeneroID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.GeneroID, "", new { @class = "text-danger" })
+            </div>
+
+
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.SeccionesID, "Secciones", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("SeccionesID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SeccionesID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-success" />
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10">
+            <a class="btn btn-outline-danger" href="/Libros/Index"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Atras</a>
+        </div>
+    </div>
+</div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

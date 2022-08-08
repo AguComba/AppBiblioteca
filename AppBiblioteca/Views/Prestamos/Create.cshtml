@@ -1,0 +1,197 @@
+﻿@model AppBiblioteca.Models.Prestamos
+
+@{
+    ViewBag.Title = "Crear Prestamo";
+}
+
+<h2>Crear Prestamo</h2>
+
+
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+    
+
+    //Modal
+    <div class="modal fade" id="modalNuevoLibro" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar libro al prestamo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>Libros</label>
+                        @Html.DropDownList("LibroID", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="GuardarLibro()">Guardar Libro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.PrestamoFecha, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.PrestamoFecha, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PrestamoFecha, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.PrestamoFechaDevolucion, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.PrestamoFechaDevolucion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PrestamoFechaDevolucion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.SocioID, "Nombre del Socio", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("SocioID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SocioID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nro. del Libro</th>
+                        <th scope="col">Nombre del Libro</th>
+                        <th scope="col"><a class="btn btn-primary" data-toggle="modal" data-target="#modalNuevoLibro"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar Libro</a></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-libros">
+
+                </tbody>
+            </table>
+        </div>
+       
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                </div>
+            </div>
+
+            <div class="col-md-offset-2 col-md-10">
+                <a class="btn btn-outline-danger" onclick="CancelarPrestamo()"> 
+                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    Cancelar prestamo
+                </a>
+            </div>
+        </div>
+    </div>
+    }
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    /* Funcion para guardar libros en la tabla temp.*/
+
+    function GuardarLibro() {
+        var libroID = $('#LibroID').val();
+       
+
+        if (libroID != null) {
+            $.ajax({
+                type: "POST",
+                url: '../../Prestamos/GuardarLibro',
+                data: { LibroID: libroID },
+                success: function (resultado) {
+                    if (resultado == true) {
+                        $('#modalNuevoLibro').modal('hide');
+                        location.href = "../../Prestamos/Create"
+                       /* BuscarLibros();*/
+                    }
+                    else {
+                        alert('No se pudo guardar el libro, intente nuevamente.')
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+    }
+
+
+    /*Funcion para mostrar libros en la tabla */
+    window.onload = BuscarLibros();
+
+    function BuscarLibros() {
+        $('#tbody-libros').empty();
+        
+        $.ajax({
+            type: "POST",
+            url: '../../Prestamos/BuscarLibros',
+            data: {},
+            success: function (listadoPrestamosDetallesT) {
+                $.each(listadoPrestamosDetallesT, function (index, item) {
+                    $("#tbody-libros").append(
+                        "<tr>" +
+                        "<td>" + item.LibroID + "</td>" +
+                        "<td>" + item.LibroTitulo + "</td>" +
+                        "<td><a class='btn btn-danger' onclick = 'QuitarLibro(" + item.PrestamoDetalleTID + ")'>Eliminar</a></td>" +
+                        "</tr>"
+                    );
+                })
+            }
+        })
+    }
+
+    /*Funcion para cancelar el prestamo*/
+    function CancelarPrestamo() {
+        $.ajax({
+            type: "POST",
+            url: '../../Prestamos/CancelarPrestamo',
+            data: {},
+            success: function (resultado) {
+                if (resultado == true) {
+                    location.href = "../../Prestamos/Index"
+                }
+                else {
+                    alert("No se pudo cancelar el Prestamo, intente nuevamente.")
+                }
+            },
+            error: function (resutl) {
+
+            }
+
+        });
+    };
+
+    //Funcion para eliminar el libro de la tabla
+    function QuitarLibro(id) {
+        var eliminarLibro = confirm("¿Esta seguro de eliminar el libro?");
+        if (eliminarLibro == true) {
+            $.ajax({
+                type: "POST",
+                url: '../../Prestamos/QuitarLibro',
+                data: { PrestamoDetalleTID: id },
+                success: function (resultado) {
+                    if (resultado == true) {
+                        /*BuscarLibros();*/
+                        location.href= "../../Prestamos/Create"
+                    }
+                    else {
+                        alert("No se pudo eliminar el libro, intente nuevamente");
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+    }
+</script>
+}

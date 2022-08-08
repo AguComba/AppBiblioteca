@@ -1,0 +1,89 @@
+﻿@model IEnumerable<AppBiblioteca.Models.Libros>
+
+@{
+    ViewBag.Title = "Listado de libros";
+}
+
+<h2>Lista de libros</h2>
+
+<p>
+    <a href="~/Libros/Create" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo libro</a>
+</p>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Autores.AutoresNombre)
+            </th>
+            <th class="ocultar768">
+                @Html.DisplayNameFor(model => model.Editoriales.EditorialNombre)
+            </th>
+            <th class="ocultar550">
+                @Html.DisplayNameFor(model => model.Generos.GeneroNombre)
+            </th>
+            <th class="ocultar768">
+                @Html.DisplayNameFor(model => model.Secciones.SeccionesNombre)
+            </th>
+            <th class="ocultar550">
+                @Html.DisplayNameFor(model => model.LibroISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LibroTitulo)
+            </th>
+            <th class="ocultar1200">
+                @Html.DisplayNameFor(model => model.LibroFechaPublicacion)
+            </th>
+            <th class="ocultar1200">
+                @Html.DisplayNameFor(model => model.EstadoLibro)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Autores.AutoresNombre)
+            </td>
+            <td class="ocultar768">
+                @Html.DisplayFor(modelItem => item.Editoriales.EditorialNombre)
+            </td>
+            <td class="ocultar550">
+                @Html.DisplayFor(modelItem => item.Generos.GeneroNombre)
+            </td>
+            <td class="ocultar768">
+                @Html.DisplayFor(modelItem => item.Secciones.SeccionesNombre)
+            </td>
+            <td class="ocultar550">
+                @Html.DisplayFor(modelItem => item.LibroISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LibroTitulo)
+            </td>
+            <td class="ocultar1200">
+                @Html.DisplayFor(modelItem => item.LibroFechaPublicacion)
+            </td>
+            <td class="ocultar1200">
+                @Html.DisplayFor(modelItem => item.EstadoLibro)
+            </td>
+            <td class="text-center">
+                <a class="btn btn-dark btn-separar" href="/Libros/Edit/@item.LibroID"><i class="fa fa-pencil-square" aria-hidden="true"></i> Modificar</a>
+                <a class="btn btn-danger btn-separar" onclick="EliminarLibro(@item.LibroID)"> <i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+            </td>
+        </tr>
+    </tbody>
+}
+
+</table>
+
+<script>
+   
+        function EliminarLibro(LibroID) {
+
+        var confirmar = confirm("¿Esta seguro de eliminar el libro seleccionado?")
+        if (confirmar == true) {
+            location.href = '../Libros/DeleteConfirmed/' + LibroID;
+        }
+    }
+
+</script>

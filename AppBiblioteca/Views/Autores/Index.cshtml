@@ -1,0 +1,65 @@
+﻿@model IEnumerable<AppBiblioteca.Models.Autores>
+
+@{
+    ViewBag.Title = "Lista de Autores";
+
+
+}
+
+<h2>Listado de Autores</h2>
+
+<p>
+    <a href="~/Autores/Create" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Autor</a>
+</p>
+
+
+@if( ViewBag.MensajeDevuelto != null )
+{
+    <div class="alert alert-warning text-center" role="alert" >
+        @ViewBag.MensajeDevuelto
+    </div>
+}
+
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Nombre del Autor
+            </th>
+            <th>
+                Apellido del Autor
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model) {
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AutoresNombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AutoresApellido)
+            </td>
+            <td class="text-center">
+                <a class="btn btn-dark" href="/Autores/Edit/@item.AutoresID"><i class="fa fa-pencil-square" aria-hidden="true"></i> Modificar</a>
+                <a class="btn btn-danger" onclick="EliminarAutor(@item.AutoresID)"> <i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+            </td>
+                
+        </tr>
+    </tbody>
+}
+
+</table>
+
+<script>
+    function EliminarAutor(AutorID) {
+
+        var confirmar = confirm("¿Esta seguro de eliminar el Autor seleccionado?")
+        if (confirmar == true) {
+            location.href = '../Autores/DeleteConfirmed/'+ AutorID;
+        }
+    }
+</script>

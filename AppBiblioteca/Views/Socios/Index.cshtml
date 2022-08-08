@@ -1,0 +1,83 @@
+﻿@model IEnumerable<AppBiblioteca.Models.Socios>
+
+@{
+    ViewBag.Title = "Lista de Socios";
+}
+
+<h2>Listado de Socios</h2>
+
+<p>
+    <a href="~/Socios/Create" class="btn btn-primary">
+        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        Nuevo Socio
+    </a>
+</p>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SocioNombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocioApellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocioDireccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocioTelefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocioEdad)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocioNombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocioApellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocioDireccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocioTelefono)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocioEdad)
+                </td>
+                <td class="text-center">                   
+                    <a class="btn btn-dark" href="/Socios/Edit/@item.SocioID">
+                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                        Modificar
+                    </a>
+                    <a class="btn btn-danger" onclick="EliminarSocio(@item.SocioID)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+
+
+
+    }
+
+</table>
+
+<script>
+    function EliminarSocio(SocioID) {
+
+        var confirmar = confirm("¿Esta seguro de eliminar el Socio seleccionado?")
+        if (confirmar == true) {
+            location.href = '../Socios/DeleteConfirmed/' + SocioID;
+        }
+    }
+</script>

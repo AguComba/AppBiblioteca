@@ -1,0 +1,58 @@
+﻿@model AppBiblioteca.Models.Socios
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Socios</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SocioNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SocioNombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SocioApellido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SocioApellido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SocioDireccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SocioDireccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SocioTelefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SocioTelefono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SocioFechaNacimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SocioFechaNacimiento)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SocioID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,192 @@
+﻿@model AppBiblioteca.Models.Devoluciones
+
+@{
+    ViewBag.Title = "Crear Devolucion";
+}
+
+<h2>Crear Devolucion</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalNuevoLibro-D" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar libro a la devolucion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>Libros</label>
+                        @Html.DropDownList("LibroID", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="GuardarLibroD();">Guardar Libro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.DevolucionFecha, htmlAttributes: new { @class = "control-label " })
+                @Html.EditorFor(model => model.DevolucionFecha, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DevolucionFecha, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.SocioID, "Nombre del Socio", htmlAttributes: new { @class = "control-label " })
+                @Html.DropDownList("SocioID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SocioID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nro. del Libro</th>
+                <th scope="col">Nombre del Libro</th>
+                <th scope="col"><a class="btn btn-primary" data-toggle="modal" data-target="#modalNuevoLibro-D"> Agregar Libro </a></th>
+            </tr>
+        </thead>
+        <tbody id="tbody-librosD">
+        </tbody>
+    </table>
+
+
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                </div>
+            </div>
+
+            <div class="col-md-offset-2 col-md-10">
+                <a class="btn btn-outline-danger" onclick="CancelarDevolucion();">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    Cancelar Devolución
+                </a>
+            </div>
+        </div>
+        }
+
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+
+
+            <script>
+
+                function GuardarLibroD() {
+                    var libroID = $('#LibroID').val(); 
+
+                    if (libroID != null) {
+
+                        $.ajax({
+                            type: "POST",
+                            url: '../../Devoluciones/GuardarLibroD',
+                            data: { LibroID: libroID },
+                            success: function (resultado) {
+                                if (resultado == true) {
+                                    $('#modalNuevoLibro-D').modal('hide')
+                                    //BuscarLibroD();
+                                    location.href = "../../Devoluciones/Create";
+
+                                }
+                                else {
+                                    alert("No se pudo guardar el libro, intente nuevamente");
+                                }
+                            },
+                            error: function (result) {
+
+                            }
+                        });
+                    } 
+                }
+
+                window.onload = BuscarLibroD()
+
+                function BuscarLibroD() {
+                    $("#tbody-librosD").empty();
+
+                    $.ajax({
+                        type: "POST",
+                        url: '../../Devoluciones/BuscarLibroD',
+                        data: {},
+                        success: function (listadoDevolucionesDetallesT) {
+                            $.each(listadoDevolucionesDetallesT, function (index, item) {
+                                $("#tbody-librosD").append(
+                                    "<tr>" +
+                                    "<td>" + item.LibroID + "</td>" +
+                                    "<td>" + item.LibroTitulo + "</td>" + 
+                                    "<td><a class = 'btn btn-danger' onclick = 'EliminarLibroD("
+                                        + item.DevolucionesDetallesTID
+                                    + ")'>Quitar</a></td>" +
+                                    "</tr>"
+                                );
+                            })
+                        },
+                        error: function (result){
+
+                        }
+                    }) 
+                }
+
+                function CancelarDevolucion() {
+
+                    $.ajax({
+                        type: "POST",
+                        url: '../../Devoluciones/CancelarDevolucion',
+                        data: {},
+                        success: function (resultado) {
+                            if (resultado == true) {
+                                location.href = '../../Devoluciones/Index'
+                            }
+                            else {
+                                alert("No se pudo cancelar la Devolucion, intente nuevamente")
+                            }
+                        },
+                        error: function (result) {
+
+                        }
+                    });
+                }
+
+                function EliminarLibroD(id) {
+                    var eliminar = confirm("¿Esta seguiro de eliminar el libro?")
+                    if (eliminar == true) {
+                        $.ajax({
+                            type: "POST",
+                            url: '../../Devoluciones/EliminarLibroD',
+                            data: { DevolucionesDetallesTID: id },
+                            success: function (resultado) {
+                                if (resultado == true) {
+                                    //BuscarLibroD();
+                                    location.href = '../../Devoluciones/Create';
+                                }
+                                else {
+                                    alert("No se pudo eliminar el libro, intente nuevamente");
+                                }
+                            },
+                            error: function (result) {
+
+                            }
+                        });
+                    }
+                }
+
+            </script>
+        }

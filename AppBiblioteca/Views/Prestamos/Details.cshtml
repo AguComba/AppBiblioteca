@@ -1,0 +1,43 @@
+﻿@model AppBiblioteca.Models.Prestamos
+
+@{
+    ViewBag.Title = "Detalles prestamos";
+}
+
+<h2>Detalles Prestamos</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Socios.SocioNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Socios.SocioNombreCompleto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PrestamoFecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrestamoFecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PrestamoFechaDevolucion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrestamoFechaDevolucion)
+        </dd>
+        
+    </dl>
+</div>
+
+        <div>
+            <a class="btn btn-outline-danger" href="/Prestamos/Index"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Atras</a>
+        </div>
+
+
